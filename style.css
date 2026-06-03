@@ -1,0 +1,319 @@
+/* Modern Glassmorphism Calculator Design System */
+
+/* Root variables for spacing, font sizes, and transition speeds */
+:root {
+  --font-family: 'Outfit', sans-serif;
+  --transition-speed: 0.25s;
+  
+  /* Color system - curated palettes (avoiding plain/raw colors) */
+  --bg-gradient-1: #0f0c29;
+  --bg-gradient-2: #302b63;
+  --bg-gradient-3: #24243e;
+  --bg-gradient-4: #1a1a4e;
+
+  /* Glassmorphism elements */
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: rgba(0, 0, 0, 0.3);
+  
+  /* Number buttons (subtle white glass) */
+  --btn-num-bg: rgba(255, 255, 255, 0.08);
+  --btn-num-border: rgba(255, 255, 255, 0.08);
+  --btn-num-hover: rgba(255, 255, 255, 0.18);
+  --btn-num-active: rgba(255, 255, 255, 0.28);
+  
+  /* Operators (purple tint) */
+  --btn-op-bg: rgba(157, 78, 221, 0.15);
+  --btn-op-border: rgba(157, 78, 221, 0.25);
+  --btn-op-color: #d8b4fe;
+  --btn-op-hover: rgba(157, 78, 221, 0.3);
+  --btn-op-active: rgba(157, 78, 221, 0.45);
+  
+  /* Helper/Clear (pink/red tint) */
+  --btn-clear-bg: rgba(247, 37, 133, 0.15);
+  --btn-clear-border: rgba(247, 37, 133, 0.25);
+  --btn-clear-color: #f9a8d4;
+  --btn-clear-hover: rgba(247, 37, 133, 0.3);
+  --btn-clear-active: rgba(247, 37, 133, 0.45);
+
+  /* Equals button (solid vibrant purple) */
+  --btn-eq-bg: linear-gradient(135deg, #7b2cbf, #9d4edd);
+  --btn-eq-hover: linear-gradient(135deg, #9d4edd, #c77dff);
+  --btn-eq-shadow: rgba(157, 78, 221, 0.4);
+}
+
+/* Global Reset & Base Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  /* Shifting animated gradient background */
+  background: linear-gradient(-45deg, var(--bg-gradient-1), var(--bg-gradient-2), var(--bg-gradient-3), var(--bg-gradient-4));
+  background-size: 400% 400%;
+  animation: gradientShift 8s ease infinite;
+}
+
+/* Background animated gradient keyframes */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Full container overlay holding glows & calculator */
+.calculator-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+}
+
+/* Decorative background glowing bubbles (visible behind the calculator glass) */
+.bg-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.bg-glow-1 {
+  width: 250px;
+  height: 250px;
+  background: #7b2cbf;
+  top: 15%;
+  left: 20%;
+  animation: float1 12s ease-in-out infinite alternate;
+}
+
+.bg-glow-2 {
+  width: 300px;
+  height: 300px;
+  background: #f72585;
+  bottom: 15%;
+  right: 20%;
+  animation: float2 15s ease-in-out infinite alternate;
+}
+
+/* Floats bubbles slowly for dynamic feel */
+@keyframes float1 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(40px, 30px) scale(1.15); }
+}
+
+@keyframes float2 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-30px, -45px) scale(0.9); }
+}
+
+/* Main Calculator Glass Body */
+.calculator {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 375px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  box-shadow: 0 25px 45px var(--glass-shadow);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  transition: transform 0.3s ease;
+}
+
+/* Hovering the overall calculator gives a micro scale transition */
+.calculator:hover {
+  transform: translateY(-2px);
+}
+
+/* Display styles (expression & result) */
+.calculator-display {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  min-height: 100px;
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  word-wrap: break-word;
+  word-break: break-all;
+  overflow: hidden;
+}
+
+.expression-display {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.45);
+  min-height: 1.5rem;
+  margin-bottom: 6px;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  text-align: right;
+  width: 100%;
+  white-space: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none; /* Hide scrollbars for clean display UI */
+}
+
+.expression-display::-webkit-scrollbar {
+  display: none;
+}
+
+.result-display {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: #ffffff;
+  width: 100%;
+  text-align: right;
+  white-space: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.result-display::-webkit-scrollbar {
+  display: none;
+}
+
+/* Keypad Layout using 4-column Grid */
+.calculator-keypad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+/* Base button styles */
+.btn {
+  border: none;
+  outline: none;
+  font-size: 1.25rem;
+  font-weight: 500;
+  height: 62px;
+  border-radius: 16px;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background var(--transition-speed) ease, 
+              border-color var(--transition-speed) ease, 
+              transform 0.1s ease, 
+              box-shadow var(--transition-speed) ease;
+}
+
+.btn:active {
+  transform: scale(0.95);
+}
+
+/* Subtle white glass buttons (Numbers) */
+.btn-number {
+  background: var(--btn-num-bg);
+  border: 1px solid var(--btn-num-border);
+  color: #ffffff;
+}
+
+.btn-number:hover {
+  background: var(--btn-num-hover);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-number:active {
+  background: var(--btn-num-active);
+}
+
+/* Pink/Red tinted buttons (Clear, +/- , %) */
+.btn-clear {
+  background: var(--btn-clear-bg);
+  border: 1px solid var(--btn-clear-border);
+  color: var(--btn-clear-color);
+}
+
+.btn-clear:hover {
+  background: var(--btn-clear-hover);
+  border-color: rgba(247, 37, 133, 0.4);
+}
+
+.btn-clear:active {
+  background: var(--btn-clear-active);
+}
+
+/* Purple tinted buttons (Operators) */
+.btn-operator {
+  background: var(--btn-op-bg);
+  border: 1px solid var(--btn-op-border);
+  color: var(--btn-op-color);
+  font-size: 1.4rem;
+}
+
+.btn-operator:hover {
+  background: var(--btn-op-hover);
+  border-color: rgba(157, 78, 221, 0.4);
+}
+
+.btn-operator:active {
+  background: var(--btn-op-active);
+}
+
+/* Active operator indicator when operator is selected but not committed */
+.btn-operator.active-op {
+  background: rgba(157, 78, 221, 0.6);
+  border-color: rgba(255, 255, 255, 0.5);
+  color: #ffffff;
+}
+
+/* Equals Button (Solid vibrant purple, 2 columns span) */
+.btn-equals {
+  grid-column: span 2;
+  background: var(--btn-eq-bg);
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: 600;
+  box-shadow: 0 8px 20px var(--btn-eq-shadow);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-equals:hover {
+  background: var(--btn-eq-hover);
+  box-shadow: 0 10px 25px rgba(157, 78, 221, 0.6);
+}
+
+.btn-equals:active {
+  transform: scale(0.97);
+}
+
+/* Responsive adjustments for smaller phone screens */
+@media (max-width: 360px) {
+  .calculator {
+    padding: 20px;
+    gap: 16px;
+  }
+  
+  .btn {
+    height: 52px;
+    font-size: 1.1rem;
+    border-radius: 12px;
+  }
+
+  .result-display {
+    font-size: 2.1rem;
+  }
+}
