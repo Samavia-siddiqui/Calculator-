@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A beautiful, interactive Glassmorphism Calculator with real-time expression display and keyboard support. Built using pure HTML, CSS, and JavaScript.">
+  <title>Glassmorphism Calculator</title>
+  <!-- Google Fonts for modern typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="calculator-container" id="calculator-container">
+    <!-- Decorative background glow bubbles to enhance the glassmorphic backdrop filter effect -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    
+    <main class="calculator" id="calculator">
+      <!-- Display Section -->
+      <section class="calculator-display" aria-label="Calculator Display">
+        <div class="expression-display" id="expression" aria-live="polite"></div>
+        <div class="result-display" id="result" aria-live="polite">0</div>
+      </section>
+
+      <!-- Keypad Section -->
+      <section class="calculator-keypad" aria-label="Calculator Keypad">
+        <!-- Row 1: Clear and helper operations -->
+        <button type="button" class="btn btn-clear" id="btn-clear" data-action="clear">AC</button>
+        <button type="button" class="btn btn-clear" id="btn-toggle-sign" data-action="toggle-sign">±</button>
+        <button type="button" class="btn btn-clear" id="btn-percent" data-action="percent">%</button>
+        <button type="button" class="btn btn-operator" id="btn-divide" data-operator="/">÷</button>
+
+        <!-- Row 2: Numbers 7, 8, 9 & Multiplier -->
+        <button type="button" class="btn btn-number" id="btn-7" data-number="7">7</button>
+        <button type="button" class="btn btn-number" id="btn-8" data-number="8">8</button>
+        <button type="button" class="btn btn-number" id="btn-9" data-number="9">9</button>
+        <button type="button" class="btn btn-operator" id="btn-multiply" data-operator="*">×</button>
+
+        <!-- Row 3: Numbers 4, 5, 6 & Subtraction -->
+        <button type="button" class="btn btn-number" id="btn-4" data-number="4">4</button>
+        <button type="button" class="btn btn-number" id="btn-5" data-number="5">5</button>
+        <button type="button" class="btn btn-number" id="btn-6" data-number="6">6</button>
+        <button type="button" class="btn btn-operator" id="btn-subtract" data-operator="-">−</button>
+
+        <!-- Row 4: Numbers 1, 2, 3 & Addition -->
+        <button type="button" class="btn btn-number" id="btn-1" data-number="1">1</button>
+        <button type="button" class="btn btn-number" id="btn-2" data-number="2">2</button>
+        <button type="button" class="btn btn-number" id="btn-3" data-number="3">3</button>
+        <button type="button" class="btn btn-operator" id="btn-add" data-operator="+">+</button>
+
+        <!-- Row 5: Number 0, Decimal Point & Equals (spans 2 columns) -->
+        <button type="button" class="btn btn-number" id="btn-0" data-number="0">0</button>
+        <button type="button" class="btn btn-number" id="btn-decimal" data-action="decimal">.</button>
+        <button type="button" class="btn btn-equals" id="btn-equals" data-action="calculate">=</button>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
